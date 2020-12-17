@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React from "react";
+import { Switch, BrowserRouter as Router } from "react-router-dom";
+import Register from "./auth/components/Register.component";
+import Details from "./user/components/Details.component";
+import List from "./user/components/List.component";
 
-function App() {
+import Routes from "./Routes";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import RouteWithLayout from "./RouteWithLayout";
+import MainLayout from "./MainLayout";
+
+const theme = createMuiTheme({});
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <div>
+          <Routes />
+          {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+          <Switch>
+            <RouteWithLayout
+              exact
+              path="/register"
+              component={Register}
+              title="Register"
+              layout={MainLayout}
+            />
+            <RouteWithLayout
+              exact
+              path="/"
+              component={List}
+              title="List"
+              layout={MainLayout}
+            />
+             <RouteWithLayout
+              exact
+              path="/users/:id"
+              component={Details}
+              title="Details"
+              layout={MainLayout}
+            />
+          </Switch>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
