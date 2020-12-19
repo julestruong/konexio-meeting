@@ -147,7 +147,7 @@ const Routes = () => {
               <ListItemText primary={"Register"} />
             </ListItem>
           </Link>
-          <Link to="/list">
+          <Link to="/">
             <ListItem button key={"list"}>
               <ListItemIcon>
                 <GroupIcon />

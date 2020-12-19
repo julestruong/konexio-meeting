@@ -13,7 +13,6 @@ import {
 import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import PostAddIcon from "@material-ui/icons/PostAdd";
-import PhotoCamera from "@material-ui/icons/PhotoCamera";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -44,12 +43,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SubmitButton = (props) => (
-  <button {...props} type="submit">
-    Submit{" "}
-  </button>
-);
-
 const Register = () => {
   const {
     register,
@@ -64,20 +57,40 @@ const Register = () => {
     reValidateMode: "onChange",
     defaultValues: {
       status: "",
+      terms: false,
+      newsletter: false,
     },
   });
   const classes = useStyles();
 
   const onSubmit = (data) => {
-    console.log(data);
+    console.log("DATA", data);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+
+    fetch("http://localhost:3333/register", requestOptions)
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        const formData = new FormData();
+        formData.append("file", data.picture[0]);
+        console.log("formData", formData, res);
+
+        fetch("http://localhost:3333/upload?user=" + res.id, {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => {})
+          .catch((err) => console.log(err));
+      });
   };
 
   const variant = "filled";
   const fieldRequired = "Field is required.";
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   return (
     <div className={classes.container}>
@@ -160,7 +173,12 @@ const Register = () => {
           <Controller
             control={control}
             name="status"
-            rules={register({ validate: (value) => {console.log("LOL", value); return false} })}
+            rules={register({
+              validate: (value) => {
+                console.log("LOL", value);
+                return false;
+              },
+            })}
             as={
               <Select name="status" variant={variant}>
                 <MenuItem name="teacher" value={"teacher"}>
