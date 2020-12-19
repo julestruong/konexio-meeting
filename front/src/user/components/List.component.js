@@ -1,5 +1,17 @@
-import { makeStyles, Typography } from "@material-ui/core";
+import {
+  makeStyles,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -8,13 +20,21 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     width: "90%",
     [theme.breakpoints.up(780)]: {
-      width: "45%",
+      width: "80%",
     },
   },
-  row: {
-    display: "flex",
-    flexDirection: "row",
+  table: {
+    marginTop: theme.spacing(2),
   },
+  picture: {
+    width: 96,
+  },
+  editIcon: {
+    color: theme.palette.primary.light,
+    "&:hover": {
+      color: theme.palette.primary.dark
+    }
+  }
 }));
 
 const List = () => {
@@ -39,18 +59,41 @@ const List = () => {
       <Typography variant="h4" className={classes.title}>
         List of users
       </Typography>
-      {users &&
-        users.map((user) => (
-          <div className={classes.row}>
-            <div>{user.firstname}</div>
-            <div>{user.lastname}</div>
-            <div>{user.email}</div>
-            <div>{user.status}</div>
-            <div>
-              {user.picture && <img src={user.picture} />} 
-            </div>
-          </div>
-        ))}
+      <TableContainer component={Paper} className={classes.table}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>Firstname</TableCell>
+              <TableCell>Lastname</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Newsletter</TableCell>
+              <TableCell>Picture</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users &&
+              users.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.firstname}</TableCell>
+                  <TableCell>{user.lastname}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.status}</TableCell>
+                  <TableCell>{user.newsletter ? "Yes" : "No"}</TableCell>
+                  <TableCell>
+                    <img className={classes.picture} src={user.picture} />
+                  </TableCell>
+                  <TableCell>
+                    <Link to={"/users/" + user.id} className={classes.editIcon}>
+                      <VisibilityIcon />
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

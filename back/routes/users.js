@@ -8,4 +8,22 @@ router.get('/', async function (req, res, next) {
   res.send({ users });
 });
 
+/* GET users listing. */
+router.get('/:id', async function (req, res, next) {
+  const user = await userManager.findUser(req.params.id);
+  res.send({ user });
+});
+
+/* GET users listing. */
+router.put('/:id', async function (req, res, next) {
+  if (!req.body.firstname || req.body.firstname === '') {
+    res.status(400);
+    res.send();
+    return;
+  }
+  const user = await userManager.updateUser(req.params.id, req.body.firstname);
+  res.send({ user });
+});
+
+
 module.exports = router;

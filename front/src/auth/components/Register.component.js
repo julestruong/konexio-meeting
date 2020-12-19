@@ -38,17 +38,15 @@ const useStyles = makeStyles((theme) => ({
   error: {
     color: theme.palette.error.main,
   },
-  uploadInput: {
-    display: "none",
-  },
+  uploadlabel: {
+    marginBottom: theme.spacing(1)
+  }
 }));
 
 const Register = () => {
   const {
     register,
     handleSubmit,
-    watch,
-    setError,
     getValues,
     errors,
     control,
@@ -139,13 +137,14 @@ const Register = () => {
         <TextField
           name="password"
           label="Password *"
+          type="password"
           variant={variant}
           inputRef={register({ required: true })}
           error={!!errors.password}
         />
         {!!errors.password && (
           <span className={classes.error}>
-            {errors.email.password || fieldRequired}
+            {errors.password.message || fieldRequired}
           </span>
         )}
         <br />
@@ -153,6 +152,7 @@ const Register = () => {
           name="password_conf"
           label="Password confirmation *"
           variant={variant}
+          type="password"
           inputRef={register({
             required: true,
             validate: () =>
@@ -175,7 +175,6 @@ const Register = () => {
             name="status"
             rules={register({
               validate: (value) => {
-                console.log("LOL", value);
                 return false;
               },
             })}
@@ -199,7 +198,7 @@ const Register = () => {
         )}
         <br />
         <div className={classes.upload}>
-          <InputLabel id="picture">Upload a (nice) picture</InputLabel>
+          <InputLabel id="picture" className={classes.uploadlabel}>Upload a (nice) picture</InputLabel>
           <input
             accept="image/*"
             name="picture"
@@ -229,7 +228,7 @@ const Register = () => {
               inputRef={register({ required: true })}
             />
           }
-          label="I have read terms and conditions"
+          label="I have read terms and conditions *"
         />
         {!!errors.terms && (
           <span className={classes.error}>This checkbox must be checked</span>

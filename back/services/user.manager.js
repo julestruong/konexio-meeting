@@ -13,7 +13,7 @@ const addUser = async (user) => {
 };
 
 const findUser = async (userId) => {
-  return await models.User.find((user) => user.id === id);
+  return await models.User.findByPk(userId)
 };
 
 const findAll = async () => {
@@ -21,11 +21,11 @@ const findAll = async () => {
 }
 
 const setPicture = async (userId, pictureUrl) => {
-  return await models.User.update({picture: pictureUrl}, {where: {id:userId}})
+  return await models.User.update({picture: pictureUrl}, {where: {id:userId}});
 };
 
-const updateUser = (user) => {
-  //
+const updateUser = async (userId, firstname) => {
+  return await models.User.update({firstname}, {where: {id:userId}});
 };
 
 module.exports = { addUser, findUser, findAll, setPicture, updateUser };
