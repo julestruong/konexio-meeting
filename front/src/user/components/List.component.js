@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -32,9 +32,9 @@ const useStyles = makeStyles((theme) => ({
   editIcon: {
     color: theme.palette.primary.light,
     "&:hover": {
-      color: theme.palette.primary.dark
-    }
-  }
+      color: theme.palette.primary.dark,
+    },
+  },
 }));
 
 const List = () => {
@@ -42,7 +42,9 @@ const List = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    fetch("http://localhost:3333/users")
+    fetch("http://localhost:3333/users", {
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+    })
       .then((response) => {
         return response.json();
       })

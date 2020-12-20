@@ -18,7 +18,8 @@ module.exports = (sequelize) => {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     password: {
       type: DataTypes.STRING,
@@ -36,6 +37,10 @@ module.exports = (sequelize) => {
       type: DataTypes.BOOLEAN,
       allowNull: false
     },
+    accessToken: {
+      type: DataTypes.STRING,
+      allowNull: true
+    }
   }, {
     // Other model options go here
   });

@@ -13,19 +13,46 @@ const addUser = async (user) => {
 };
 
 const findUser = async (userId) => {
-  return await models.User.findByPk(userId)
+  return await models.User.findByPk(userId);
+};
+
+const findUserByEmail = async (email) => {
+  return await models.User.findOne({ where: { email } });
+};
+
+const findUserByToken = async (token) => {
+  return await models.User.findOne({ where: { accessToken: token } });
 };
 
 const findAll = async () => {
-  return await models.User.findAll();
-}
+  return await models.User.findAll({ order: [['id', 'DESC']] });
+};
 
 const setPicture = async (userId, pictureUrl) => {
-  return await models.User.update({picture: pictureUrl}, {where: {id:userId}});
+  return await models.User.update(
+    { picture: pictureUrl },
+    { where: { id: userId } },
+  );
 };
 
-const updateUser = async (userId, firstname) => {
-  return await models.User.update({firstname}, {where: {id:userId}});
+const updateUserFirstname = async (userId, firstname) => {
+  return await models.User.update({ firstname }, { where: { id: userId } });
 };
 
-module.exports = { addUser, findUser, findAll, setPicture, updateUser };
+const updateUserToken = async (email, token) => {
+  return await models.User.update(
+    { accessToken: token },
+    { where: { email: email } },
+  );
+};
+
+module.exports = {
+  addUser,
+  findUserByEmail,
+  findUser,
+  findUserByToken,
+  findAll,
+  setPicture,
+  updateUser: updateUserFirstname,
+  updateUserToken,
+};

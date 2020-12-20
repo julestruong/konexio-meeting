@@ -34,10 +34,10 @@ const useStyles = makeStyles((theme) => ({
   },
   profileRow: {
     margin: theme.spacing(1),
-  }, 
-  error:{
-    color: theme.palette.error.light
-  } 
+  },
+  error: {
+    color: theme.palette.error.light,
+  },
 }));
 
 const Details = () => {
@@ -51,7 +51,9 @@ const Details = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch("http://localhost:3333/users/" + id)
+    fetch("http://localhost:3333/users/" + id, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+    })
       .then((response) => {
         return response.json();
       })
@@ -72,19 +74,22 @@ const Details = () => {
     setLoading(true);
     fetch("http://localhost:3333/users/" + id, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ firstname }),
-    }).then((res) => {
-
-      if(res.status !== 200) {
-        throw new Error();
-      }
-      setEditUser(false);
-      setLoading(false);
-    }).catch(err => {
-      console.log("qsd");
-      setError('firstname is required')
-    });
+    })
+      .then((res) => {
+        if (res.status !== 200) {
+          throw new Error();
+        }
+        setEditUser(false);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError("firstname is required");
+      });
   };
 
   const onFirstnameChange = (e) => {
@@ -98,7 +103,7 @@ const Details = () => {
         User n°{id}
       </Typography>
       {user && (
-        <div class={classes.wrapProfile}>
+        <div className={classes.wrapProfile}>
           <div>
             <img className={classes.picture} src={"../" + user.picture} />
           </div>
@@ -111,7 +116,7 @@ const Details = () => {
                     name="firstname"
                     value={firstname}
                     onChange={onFirstnameChange}
-                    required="true"
+                    required
                   />
                   <IconButton onClick={updateFirstname}>
                     <CheckIcon fontSize="small" />
@@ -126,7 +131,7 @@ const Details = () => {
                   </IconButton>
                 </div>
               )}
-              {error && (<div className={classes.error}>{error}</div>)}
+              {error && <div className={classes.error}>{error}</div>}
             </div>
             <div className={classes.profileRow}>
               <strong>Lastname:</strong> {user.lastname}

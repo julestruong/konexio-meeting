@@ -10,9 +10,10 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { useForm, Controlle, Controller } from "react-hook-form";
 import PostAddIcon from "@material-ui/icons/PostAdd";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -39,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main,
   },
   uploadlabel: {
-    marginBottom: theme.spacing(1)
-  }
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 const Register = () => {
@@ -49,6 +50,7 @@ const Register = () => {
     handleSubmit,
     getValues,
     errors,
+    setError,
     control,
   } = useForm({
     mode: "all",
@@ -60,9 +62,10 @@ const Register = () => {
     },
   });
   const classes = useStyles();
+  const history = useHistory();
+  const [emailError, setEmailError] = useState();
 
   const onSubmit = (data) => {
-    console.log("DATA", data);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -71,20 +74,34 @@ const Register = () => {
 
     fetch("http://localhost:3333/register", requestOptions)
       .then((res) => {
+        if (res.status !== 200) {
+          throw new Error();
+        }
+
         return res.json();
       })
       .then((res) => {
         const formData = new FormData();
         formData.append("file", data.picture[0]);
-        console.log("formData", formData, res);
 
         fetch("http://localhost:3333/upload?user=" + res.id, {
           method: "POST",
           body: formData,
-        })
-          .then((res) => {})
+        }).then((res) => {
+            history.push("/login");
+          })
           .catch((err) => console.log(err));
+      })
+      .catch((error) => {
+        if (error) {
+          setEmailError('Email already used');
+        }
       });
+  };
+
+  const onEmailChange = () => {
+    console.log("emailchange");
+    setEmailError(false);
   };
 
   const variant = "filled";
@@ -119,6 +136,7 @@ const Register = () => {
           name="email"
           label="Email *"
           variant={variant}
+          onChange={onEmailChange}
           inputRef={register({
             required: true,
             pattern: {
@@ -133,6 +151,8 @@ const Register = () => {
             {errors.email.message || fieldRequired}
           </span>
         )}
+        {emailError && <span className={classes.error}>{emailError}</span>}
+
         <br />
         <TextField
           name="password"
@@ -198,7 +218,9 @@ const Register = () => {
         )}
         <br />
         <div className={classes.upload}>
-          <InputLabel id="picture" className={classes.uploadlabel}>Upload a (nice) picture</InputLabel>
+          <InputLabel id="picture" className={classes.uploadlabel}>
+            Upload a (nice) picture
+          </InputLabel>
           <input
             accept="image/*"
             name="picture"

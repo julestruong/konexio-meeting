@@ -4,6 +4,7 @@ import { Switch, BrowserRouter as Router } from "react-router-dom";
 import Register from "./auth/components/Register.component";
 import Details from "./user/components/Details.component";
 import List from "./user/components/List.component";
+import Login from "./auth/components/Login.component";
 
 import Routes from "./Routes";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
@@ -35,7 +36,14 @@ const App = () => {
               title="List"
               layout={MainLayout}
             />
-             <RouteWithLayout
+            <RouteWithLayout
+              exact
+              path="/login"
+              component={Login}
+              title="Login"
+              layout={MainLayout}
+            />
+            <RouteWithLayout
               exact
               path="/users/:id"
               component={Details}
