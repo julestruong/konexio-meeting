@@ -5,7 +5,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
 import CheckIcon from "@material-ui/icons/Check";
 
@@ -47,6 +47,7 @@ const Details = () => {
   const [firstname, setFirstname] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
+  const history = useHistory();
 
   const { id } = useParams();
 
@@ -55,6 +56,12 @@ const Details = () => {
       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     })
       .then((response) => {
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          history.push('/login');
+
+          return;
+        }
         return response.json();
       })
       .then((body) => {

@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,12 +40,18 @@ const useStyles = makeStyles((theme) => ({
 const List = () => {
   const [users, setUsers] = useState([]);
   const classes = useStyles();
+  const history = useHistory();
 
   useEffect(() => {
     fetch("http://localhost:3333/users", {
       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     })
       .then((response) => {
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          history.push('/login');
+          return;
+        }
         return response.json();
       })
       .then((body) => {
