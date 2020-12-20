@@ -1,5 +1,4 @@
-const userManager = require('./services/user.manager');
-var jwt = require('jwt-simple');
+const userManager = require('../services/user.manager');
 
 var passport = require('passport'),
   HeaderStrategy = require('passport-http-header-strategy').Strategy;

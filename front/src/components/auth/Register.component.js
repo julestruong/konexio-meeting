@@ -10,8 +10,8 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import { useForm, Controlle, Controller } from "react-hook-form";
+import React, { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import { useHistory } from "react-router-dom";
 
@@ -50,7 +50,6 @@ const Register = () => {
     handleSubmit,
     getValues,
     errors,
-    setError,
     control,
   } = useForm({
     mode: "all",
@@ -100,7 +99,6 @@ const Register = () => {
   };
 
   const onEmailChange = () => {
-    console.log("emailchange");
     setEmailError(false);
   };
 

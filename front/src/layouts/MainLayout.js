@@ -1,9 +1,6 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense } from 'react';
 
-import { Theme, useMediaQuery } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/styles';
-import clsx from 'clsx';
-
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,14 +16,10 @@ const useStyles = makeStyles((theme) => ({
 
 const MainLayout = ({ children, title }) => {
   const classes = useStyles();
-  const theme = useTheme();
-
 
   return (
     <div
-      className={clsx({
-        [classes.root]: true,
-      })}
+      className={classes.root}
     >
       <Suspense fallback="loading">
        

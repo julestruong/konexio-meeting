@@ -4,35 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-var passport = require("./passport");
+var passport = require("./services/passport");
 
-var indexRouter = require('./routes/auth');
+var authRouter = require('./routes/auth');
 var usersRouter = require('./routes/users');
 
 var app = express();
 app.use(cors());
-
-// var passport = require('passport')
-//   , LocalStrategy = require('passport-local').Strategy;
-
-// passport.use(new LocalStrategy(
-//   function(username, password, done) {
-//     User.findOne({ username: username }, function(err, user) {
-//       if (err) { return done(err); }
-//       if (!user) {
-//         return done(null, false, { message: 'Incorrect username.' });
-//       }
-//       if (!user.validPassword(password)) {
-//         return done(null, false, { message: 'Incorrect password.' });
-//       }
-//       return done(null, user);
-//     });
-//   }
-// ));
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -43,7 +21,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.use('/', indexRouter);
+app.use('/', authRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

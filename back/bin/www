@@ -9,8 +9,6 @@ var debug = require('debug')('back:server');
 var http = require('http');
 var sequelize = require('../database/sequelize');
 
-
-
 /**
  * Create HTTP server.
  */

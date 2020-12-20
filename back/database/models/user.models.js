@@ -1,9 +1,7 @@
 var { DataTypes } = require('sequelize');
 
-// sequelize.sync({ force: true });
 module.exports = (sequelize) => {
   sequelize.define('User', {
-    // Model attributes are defined here
     firstname: {
       type: DataTypes.STRING,
       allowNull: false
@@ -41,7 +39,5 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true
     }
-  }, {
-    // Other model options go here
   });
 };

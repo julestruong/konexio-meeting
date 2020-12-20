@@ -3,7 +3,6 @@ import {
   IconButton,
   Toolbar,
   Typography,
-  Button,
   Divider,
   ListItem,
   ListItemIcon,

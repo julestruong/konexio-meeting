@@ -1,12 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var formidable = require('formidable');
-var path = require('path');
 const userManager = require('../services/user.manager');
 var jwt = require('jwt-simple');
 
 var secret = "12345";
 
+/**
+ * POST register a user
+ */
 router.post('/register', async function (req, res, next) {
   const email = req.body.email;
   const existingUser = await userManager.findUserByEmail(email);
@@ -19,6 +21,9 @@ router.post('/register', async function (req, res, next) {
   res.send(user);
 });
 
+/**
+ * POST upload a picture and set url to the user 
+ */
 router.post('/upload', function (req, res, next) {
   var form = new formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
@@ -36,6 +41,9 @@ router.post('/upload', function (req, res, next) {
   });
 });
 
+/**
+ * POST login route to check username/password and create accessToken
+ */
 router.post('/login', async function (req, res) {
 
   const username = req.body.username;

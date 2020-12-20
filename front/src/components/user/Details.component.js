@@ -45,7 +45,6 @@ const Details = () => {
   const [user, setUser] = useState({});
   const [editUser, setEditUser] = useState(false);
   const [firstname, setFirstname] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const history = useHistory();
 
@@ -57,8 +56,8 @@ const Details = () => {
     })
       .then((response) => {
         if (response.status === 401) {
-          localStorage.removeItem('token');
-          history.push('/login');
+          localStorage.removeItem("token");
+          history.push("/login");
 
           return;
         }
@@ -71,14 +70,13 @@ const Details = () => {
       .catch((err) => {
         console.error("error while getting users");
       });
-  }, [setUser, id]);
+  }, [setUser, id, history]);
 
   const editFirstname = () => {
     setEditUser(true);
   };
 
   const updateFirstname = () => {
-    setLoading(true);
     fetch("http://localhost:3333/users/" + id, {
       method: "PUT",
       headers: {
@@ -92,7 +90,6 @@ const Details = () => {
           throw new Error();
         }
         setEditUser(false);
-        setLoading(false);
       })
       .catch((err) => {
         setError("firstname is required");

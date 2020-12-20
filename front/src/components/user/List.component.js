@@ -60,7 +60,7 @@ const List = () => {
       .catch((err) => {
         console.error("error while getting users");
       });
-  }, [setUsers]);
+  }, [setUsers, history]);
 
   return (
     <div className={classes.container}>

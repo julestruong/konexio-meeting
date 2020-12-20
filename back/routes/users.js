@@ -3,7 +3,9 @@ var router = express.Router();
 const userManager = require('../services/user.manager');
 var passport = require('passport');
 
-/* GET users listing. */
+/**
+ * GET List all users
+ */
 router.get(
   '/',
   passport.authenticate('header', {
@@ -15,7 +17,9 @@ router.get(
   },
 );
 
-/* GET users listing. */
+/**
+ * GET Display one user
+ */
 router.get(
   '/:id',
   passport.authenticate('header', {
@@ -27,7 +31,9 @@ router.get(
   },
 );
 
-/* GET users listing. */
+/**
+ * PUT update firstname of a user
+ */
 router.put(
   '/:id',
   passport.authenticate('header', {
@@ -37,6 +43,7 @@ router.put(
     if (!req.body.firstname || req.body.firstname === '') {
       res.status(400);
       res.send();
+
       return;
     }
     const user = await userManager.updateUser(
